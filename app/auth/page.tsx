@@ -59,7 +59,7 @@ export default function AuthPage() {
         setLoading(false);
 
         if (error) alert(error.message);
-        else window.location.href = "/chat";
+        else router.push("/");
     };
 
     if (loading) {
