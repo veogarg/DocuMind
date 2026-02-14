@@ -75,6 +75,48 @@ This project demonstrates how to build a scalable AI product from scratch using 
 
 ---
 
+## 🏛️ Production-Grade Architecture
+
+DocuMind has been refactored with **enterprise-level architectural patterns** for maintainability, scalability, and code quality.
+
+### 📚 Detailed Documentation
+
+For comprehensive information about the refactored codebase:
+
+- **[📖 Architecture Overview](Documentation/ARCHITECTURE.md)** - System design, data flows, component hierarchy, and architectural patterns
+- **[🎣 Hooks & Utilities Reference](Documentation/HOOKS_AND_UTILITIES.md)** - Complete API documentation for all custom hooks, services, and utilities
+- **[⚡ Quick Reference Guide](Documentation/QUICK_REFERENCE.md)** - Common tasks, code snippets, and best practices
+
+### 🎯 Architecture Highlights
+
+**Layered Architecture:**
+```
+Pages → Components → Hooks → Services → Data Access → External APIs
+```
+
+**Key Patterns:**
+- **Service Layer Pattern** - Centralized business logic
+- **Custom Hooks** - Reusable stateful logic
+- **Component Modularity** - Small, focused components
+- **Type-Driven Development** - Comprehensive TypeScript types
+
+**Project Structure:**
+```
+├── app/              # Next.js pages & API routes
+├── components/       # Modular UI components (chat, layout, auth)
+├── hooks/            # Custom React hooks (7 hooks)
+├── lib/
+│   ├── services/    # Business logic (4 services)
+│   ├── ai/          # AI modules (embeddings, RAG)
+│   ├── types/       # TypeScript definitions
+│   ├── utils/       # Utility functions
+│   └── constants/   # Configuration
+```
+
+> 💡 **For Developers**: Check the [Quick Reference Guide](Documentation/QUICK_REFERENCE.md) for common tasks and code examples.
+
+---
+
 ## 📂 Core Modules
 
 ### Chat Engine
@@ -171,12 +213,24 @@ Each user can access only:
 
 This project demonstrates practical experience in:
 
+**AI Engineering:**
 * Building AI-powered SaaS systems
 * Designing RAG pipelines
 * Working with embeddings + vector DB
-* Secure multi-user architecture
 * Prompt engineering
+
+**Software Architecture:**
+* Production-grade code organization
+* Service layer pattern implementation
+* Custom hooks for state management
+* Type-driven development with TypeScript
+* Separation of concerns across layers
+
+**Full-Stack Development:**
+* Secure multi-user architecture
 * Full-stack product thinking
+* Scalable and maintainable codebase
+* Modern React patterns and best practices
 
 It reflects real-world patterns used by:
 
@@ -452,10 +506,9 @@ This project intentionally prioritizes core AI architecture over full production
 
 These are intentionally left out to keep the initial version focused, understandable, and easy to deploy.
 
-
 ---
 
-## 👨‍💻 Author
+## �👨‍💻 Author
 
 Built as part of an AI-focused full-stack exploration to understand modern LLM product architecture and production patterns.
 
