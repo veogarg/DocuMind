@@ -50,7 +50,7 @@ export function AuthForm({ onSignIn, onSignUp, loading = false }: AuthFormProps)
                 )}
 
                 <div>
-                    <Label>Email</Label>
+                    <Label className="mb-2">Email</Label>
                     <Input
                         type="email"
                         value={email}
@@ -60,7 +60,7 @@ export function AuthForm({ onSignIn, onSignUp, loading = false }: AuthFormProps)
                 </div>
 
                 <div>
-                    <Label>Password</Label>
+                    <Label className="mb-2">Password</Label>
                     <Input
                         type="password"
                         value={password}
