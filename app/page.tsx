@@ -1,47 +1,43 @@
 "use client";
 
 import { useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/hooks/useUser";
+import { chatService } from "@/lib/services/chat.service";
 
 export default function Home() {
-  const supabase = createClient();
   const router = useRouter();
+  const { user, loading } = useUser();
 
   useEffect(() => {
-    const init = async () => {
-      const { data: userData } = await supabase.auth.getUser();
-      const user = userData.user;
+    if (loading) return;
 
-      if (!user) {
-        router.push("/auth");
-        return;
-      }
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
 
-      const { data: chats } = await supabase
-        .from("chat_sessions")
-        .select("id")
-        .order("created_at", { ascending: false })
-        .limit(1);
+    initializeChat();
+  }, [user, loading, router]);
 
-      if (chats?.length) {
-        router.push(`/chat/${chats[0].id}`);
+  const initializeChat = async () => {
+    if (!user) return;
+
+    try {
+      // Try to get the latest chat session
+      const latestSession = await chatService.getLatestChatSession(user.id);
+
+      if (latestSession) {
+        router.push(`/chat/${latestSession.id}`);
       } else {
-        const { data } = await supabase
-          .from("chat_sessions")
-          .insert({
-            user_id: user.id,
-            title: "New Chat",
-          })
-          .select()
-          .single();
-
-        router.push(`/chat/${data.id}`);
+        // Create a new chat session
+        const newSession = await chatService.createChatSession(user.id);
+        router.push(`/chat/${newSession.id}`);
       }
-    };
-
-    init();
-  }, []);
+    } catch (error) {
+      console.error("Failed to initialize chat:", error);
+    }
+  };
 
   return null;
 }

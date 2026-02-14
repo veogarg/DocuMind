@@ -1,107 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Spinner } from "@/components/ui/spinner"
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import { AuthForm } from "@/components/auth/AuthForm";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function AuthPage() {
-    const supabase = createClient();
     const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
+    const { user, loading, signIn, signUp } = useAuth();
 
     useEffect(() => {
-        try {
-            setLoading(true);
-            const checkSession = async () => {
-                const { data } = await supabase.auth.getUser();
-                if (data.user) {
-                    router.push("/");
-                }
-            };
-
-            checkSession();
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
+        if (user && !loading) {
+            router.push("/");
         }
-    }, []);
-
-    const signUp = async () => {
-        setLoading(true);
-
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-        });
-
-        setLoading(false);
-
-        if (error) alert(error.message);
-        else alert("Check your email to confirm!");
-    };
-
-    const signIn = async () => {
-        setLoading(true);
-
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-
-        setLoading(false);
-
-        if (error) alert(error.message);
-        else router.push("/");
-    };
+    }, [user, loading, router]);
 
     if (loading) {
-        return <div className="flex items-center justify-center min-h-screen bg-muted">
-            <Spinner />
-        </div>
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-muted">
+                <Spinner />
+            </div>
+        );
     }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-muted">
-            <Card className="w-[400px]">
-                <CardHeader>
-                    <CardTitle>DocuMind Login</CardTitle>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                    <div>
-                        <Label>Email</Label>
-                        <Input
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </div>
-
-                    <div>
-                        <Label>Password</Label>
-                        <Input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </div>
-
-                    <Button onClick={signIn} className="w-full" disabled={loading}>
-                        Sign In
-                    </Button>
-
-                    <Button variant="outline" onClick={signUp} className="w-full">
-                        Sign Up
-                    </Button>
-                </CardContent>
-            </Card>
+            <AuthForm onSignIn={signIn} onSignUp={signUp} loading={loading} />
         </div>
     );
 }
