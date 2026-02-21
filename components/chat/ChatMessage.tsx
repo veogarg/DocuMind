@@ -17,7 +17,10 @@ export function ChatMessage({ message }: ChatMessageProps) {
             <div className="text-xs text-gray-500 mb-1">
                 {isUser ? "You" : "AI"}
             </div>
-            <div className="whitespace-pre-line text-sm">{message.content}</div>
+            <div className="whitespace-pre-line text-sm">
+                {message.content}
+                {message.streaming ? "▋" : ""}
+            </div>
         </div>
     );
 }
